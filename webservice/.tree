@@ -1,0 +1,18 @@
+project/
+├── .env                 # Environment variables
+├── package.json         # Node.js project metadata
+├── index.js             # Main entry point
+├── config/
+│   ├── db.js            # Database configuration
+│   ├── env.js           # Environment variable handler
+│   └── jwt.js           # JWT helper functions
+├── routes/
+│   └── auth.js          # Authentication routes
+├── controllers/
+│   └── authController.js # Authentication logic
+├── models/
+│   └── userModel.js     # User schema definition
+├── middlewares/
+│   └── authMiddleware.js # Middleware for protected routes
+└── test/
+    └── auth.test.js     # Unit tests for authentication
