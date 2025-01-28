@@ -97,7 +97,7 @@ class DB {
         };
 
         try {
-            const token = jwt.sign(payload, PRIVATE_KEY, signOptions);
+            const token = jwt.sign(payload, privateKEY, signOptions);
             return { token, tokenExpiry };
         } catch (error) {
             throw new Error(`JWT Generation failed: ${error.message}`);
