@@ -51,58 +51,62 @@ class DB {
             process.exit(1);
         }
     }
+}
+
+// Load the private and public keys
+const PRIVATE_KEY = fs.readFileSync(path.join(__dirname, 'private.key'), 'utf8');
+const PUBLIC_KEY = fs.readFileSync(path.join(__dirname, 'public.key'), 'utf8');
 
 // Generate a new JWT token using the private key
-getjwt = async ({
-    domainname = "",
-    uid = "",
-    unqkey = "",
-    iss = "",
-    useragent = "",
-    aud = "",
-    exph = "10hrs"
-}) => {
-    const IISMethods = new _IISMethods();
+    getjwt = async ({
+        domainname = "",
+        uid = "",
+        unqkey = "",
+        iss = "",
+        useragent = "",
+        aud = "",
+        exph = "10hrs"
+    }) => {
+        const IISMethods = new _IISMethods();
 
-    if (!iss || !uid || !unqkey || !useragent) {
-        throw new Error('Missing required parameters');
-    }
+        if (!iss || !uid || !unqkey || !useragent) {
+            throw new Error('Missing required parameters');
+        }
 
     // Payload
-    const payload = {
-        uid,
-        unqkey,
-        useragent,
-        ...(domainname && { domainname })
-    };
+        const payload = {
+            uid,
+            unqkey,
+            useragent,
+            ...(domainname && { domainname })
+        };
 
     // Signing Options
-    const signOptions = {
-        issuer: iss,
-        audience: aud,
-        expiresIn: exph,
-        algorithm: "RS256"
-    };
+        const signOptions = {
+            issuer: iss,
+            audience: aud,
+            expiresIn: exph,
+            algorithm: "RS256"
+        };
 
-    const tokenExpiry = {
-        unqkey,
-        uid,
-        iss,
-        useragent,
-        exp: exph
-    };
+        const tokenExpiry = {
+            unqkey,
+            uid,
+            iss,
+            useragent,
+            exp: exph
+        };
 
-    try {
-        const token = jwt.sign(payload, PRIVATE_KEY, signOptions);
-        return { token, tokenExpiry };
-    } catch (error) {
-        throw new Error(`JWT Generation failed: ${error.message}`);
-    }
+        try {
+            const token = jwt.sign(payload, PRIVATE_KEY, signOptions);
+            return { token, tokenExpiry };
+        } catch (error) {
+            throw new Error(`JWT Generation failed: ${error.message}`);
+        }
     
-} // End of getJWT
+    } // End of getJWT
 
 
-} // End of class DB
 
 
 
@@ -159,9 +163,7 @@ const executeData = async (operation, ObjModel, data, insertlog = false, depende
     }
 };
 
-// Load the private and public keys
-const PRIVATE_KEY = fs.readFileSync(path.join(__dirname, 'private.key'), 'utf8');
-const PUBLIC_KEY = fs.readFileSync(path.join(__dirname, 'public.key'), 'utf8');
+
 
 
 // Verify a JWT token using the public key
