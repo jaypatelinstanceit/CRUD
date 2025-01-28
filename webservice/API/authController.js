@@ -2,13 +2,15 @@ const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
 // const { getJWT } = require('../config/jwt');
 const { executeData, getJWT } = require('../config/DB'); // Import the centralized CRUD method
-
+import { IISMethods } from '../config/init';    // Import the IISMethods class
 
 
 // Create: User Signup
 exports.signup = async (req, res, next) => {
     try {
         const { username, password } = req.body;
+        const unqkey = IISMethods.generateuuid();
+        const uid = req.headers.uid;
 
         if (!username || !password) {
             return res.status(400).json({ message: 'Username and password are required' });

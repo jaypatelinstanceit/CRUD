@@ -1,7 +1,7 @@
 const express = require('express'); 
 const { signup, login, updatePassword, get, deleteuser } = require('./API/authController');
 // Import the protect middleware
-const { protect } = require('./middlewares/authMiddleware');
+const { protect } = require('./config/apiConfig');
 //brcypt
 const bcrypt = require('bcrypt');
 const router = express.Router(); // Create a new router
