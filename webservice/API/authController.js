@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 // const { getJWT } = require('../config/jwt');
 const { executeData, getJWT } = require('../config/DB'); // Import the centralized CRUD method
 import { IISMethods } from '../config/init';    // Import the IISMethods class
-
+import { MainDB, IISMethods, Config } from "../../../config/Init.js"
 
 // Create: User Signup
 exports.signup = async (req, res, next) => {

@@ -6,8 +6,11 @@ const fs = require('fs');  // File system module
 const path = require('path'); // Path module
 import { IISMethods } from './init';
 import _IISMethods from "./IISMethods.js"
+var privateKEY = fs.readFileSync("./config/private.key", "utf8")
+var publicKEY = fs.readFileSync("./config/public.key", "utf8")
 
 class DB {
+    // Initialize the database configuration parameters to null values by default 
     constructor() {
         this.DBName = null;
         this.DBUser = null;
@@ -17,6 +20,7 @@ class DB {
         this.DBType = null;
     }
 
+    // Connect to the database based on the configuration
     async connect(isMainDB) {
         const configInstance = new Config(); // Rename to avoid shadowing
 
@@ -51,13 +55,8 @@ class DB {
             process.exit(1);
         }
     }
-}
 
-// Load the private and public keys
-const PRIVATE_KEY = fs.readFileSync(path.join(__dirname, 'private.key'), 'utf8');
-const PUBLIC_KEY = fs.readFileSync(path.join(__dirname, 'public.key'), 'utf8');
-
-// Generate a new JWT token using the private key
+    // Generate a new JWT token using the private key
     getjwt = async ({
         domainname = "",
         uid = "",
@@ -78,7 +77,7 @@ const PUBLIC_KEY = fs.readFileSync(path.join(__dirname, 'public.key'), 'utf8');
             uid,
             unqkey,
             useragent,
-            ...(domainname && { domainname })
+            ...(domainname && { domainname }) // Add domainname to the payload if it exists (optional)
         };
 
     // Signing Options
@@ -105,6 +104,14 @@ const PUBLIC_KEY = fs.readFileSync(path.join(__dirname, 'public.key'), 'utf8');
         }
     
     } // End of getJWT
+
+}
+
+// Load the private and public keys
+const PRIVATE_KEY = fs.readFileSync(path.join(__dirname, 'private.key'), 'utf8');
+const PUBLIC_KEY = fs.readFileSync(path.join(__dirname, 'public.key'), 'utf8');
+
+
 
 
 
