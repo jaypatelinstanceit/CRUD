@@ -32,6 +32,21 @@ exports.signup = async (req, res, next) => {
     }
 };
 
+GetAccessToken = async (req, res, next) => {
+    try {
+        const ResponseHeaeders = {};
+        const ResponseBody = {};
+
+        if (){
+            
+        }
+
+    } catch (err) {
+        next(err);
+    }
+};
+
+
 // Read: Get all User Data in the Database if user is an admin
 exports.get = async (req, res, next) => {
     try {

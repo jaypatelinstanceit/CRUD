@@ -251,11 +251,15 @@ class Config {  // Config class to manage the environment variables for the appl
     }
 
 	getResponsestatuscode() { // getResponsestatuscode function to return the response status code object from the environment variables
-		return this.resstatuscode
+		return this.resstatuscode;
+	}
+     
+	getTokenKey() {
+		return this.tokenkey
 	}
 
     getErrmsg() {
-		return this.errmsg
+		return this.errmsg;
 	}
 
     getServerMode() { // getServerMode function to return the server mode
