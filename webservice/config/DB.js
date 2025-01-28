@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken'); // JWT module to generate and verify tokens
 const fs = require('fs');  // File system module
 const path = require('path'); // Path module
+import { IISMethods } from './init';
+import _IISMethods from "./IISMethods.js"
 
 class DB {
     constructor() {
@@ -49,7 +51,58 @@ class DB {
             process.exit(1);
         }
     }
-}
+
+// Generate a new JWT token using the private key
+getjwt = async ({
+    domainname = "",
+    uid = "",
+    unqkey = "",
+    iss = "",
+    useragent = "",
+    aud = "",
+    exph = "10hrs"
+}) => {
+    const IISMethods = new _IISMethods();
+
+    if (!iss || !uid || !unqkey || !useragent) {
+        throw new Error('Missing required parameters');
+    }
+
+    // Payload
+    const payload = {
+        uid,
+        unqkey,
+        useragent,
+        ...(domainname && { domainname })
+    };
+
+    // Signing Options
+    const signOptions = {
+        issuer: iss,
+        audience: aud,
+        expiresIn: exph,
+        algorithm: "RS256"
+    };
+
+    const tokenExpiry = {
+        unqkey,
+        uid,
+        iss,
+        useragent,
+        exp: exph
+    };
+
+    try {
+        const token = jwt.sign(payload, PRIVATE_KEY, signOptions);
+        return { token, tokenExpiry };
+    } catch (error) {
+        throw new Error(`JWT Generation failed: ${error.message}`);
+    }
+    
+} // End of getJWT
+
+
+} // End of class DB
 
 
 
@@ -110,13 +163,6 @@ const executeData = async (operation, ObjModel, data, insertlog = false, depende
 const PRIVATE_KEY = fs.readFileSync(path.join(__dirname, 'private.key'), 'utf8');
 const PUBLIC_KEY = fs.readFileSync(path.join(__dirname, 'public.key'), 'utf8');
 
-// Generate a new JWT token using the private key
-const getJWT = (userId, expiresIn = "1d") => {
-    return jwt.sign({ userId }, PRIVATE_KEY, {
-        algorithm: 'RS256', // Use RS256 for asymmetric encryption
-        expiresIn,
-    });
-};
 
 // Verify a JWT token using the public key
 const vallidateJWT = (token) => {
@@ -129,4 +175,3 @@ const vallidateJWT = (token) => {
 };
 
 module.exports = { DB, executeData, getJWT, vallidateJWT }; // Export the function for use in other files
-
