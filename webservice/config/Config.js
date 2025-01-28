@@ -248,6 +248,8 @@ class Config {  // Config class to manage the environment variables for the appl
 			510: "Not Extended",
 			511: "Network Authentication Required"
 		}
+
+		this.tokenkey = process.env.JWT_SECRET
     }
 
 	getResponsestatuscode() { // getResponsestatuscode function to return the response status code object from the environment variables
